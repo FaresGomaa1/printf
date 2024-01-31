@@ -1,7 +1,7 @@
-#include "main.h"
+:#include "main.h"
 #include <stdarg.h>
 #include <unistd.h>
-#include <stdio.h> 
+#include <stdio.h>
 
 /**
 * write_char - Writes a single character to standard output.
@@ -88,4 +88,3 @@ format++;
 va_end(args);
 return (count);
 }
-   
