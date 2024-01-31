@@ -4,10 +4,48 @@
 #include <stdio.h> /* for sprintf */
 
 /**
+ * write_char - Writes a single character to standard output.
+ * @c: The character to be written.
+ * Return: The number of characters written.
+ */
+static int write_char(char c)
+{
+    return write(1, &c, 1);
+}
+
+/**
+ * write_str - Writes a string to standard output.
+ * @str: The string to be written.
+ * Return: The number of characters written.
+ */
+static int write_str(char *str)
+{
+    int count = 0;
+    while (*str)
+    {
+        count += write_char(*str);
+        str++;
+    }
+    return count;
+}
+
+/**
+ * write_int - Writes an integer to standard output.
+ * @n: The integer to be written.
+ * Return: The number of characters written.
+ */
+static int write_int(int n)
+{
+    char buffer[12]; /* Sufficient for 32-bit integers */
+    sprintf(buffer, "%d", n);
+    return write_str(buffer);
+}
+
+/**
  * _printf - Produces output according to a format.
  * @format: A character string containing directives.
  *
- * Return: The number of characters printed.
+ * Return: The number of characters printed (excluding the null byte used to end output to strings).
  */
 int _printf(const char *format, ...)
 {
@@ -20,35 +58,31 @@ int _printf(const char *format, ...)
     {
         if (*format == '%' && *(format + 1) != '\0')
         {
-            format++;
+            format++; /* Move past '%' */
             switch (*format)
             {
                 case 'c':
-                    count += write(1, va_arg(args, int), 1);
+                    count += write_char(va_arg(args, int));
                     break;
                 case 's':
-                    count += write(1, va_arg(args, char *), 1);
+                    count += write_str(va_arg(args, char *));
                     break;
                 case '%':
-                    count += write(1, "%", 1);
+                    count += write_char('%');
                     break;
                 case 'd':
                 case 'i':
-                    {
-                        char buffer[12];
-                        sprintf(buffer, "%d", va_arg(args, int));
-                        count += write(1, buffer, strlen(buffer));
-                    }
+                    count += write_int(va_arg(args, int));
                     break;
                 default:
-                    count += write(1, "%", 1);
-                    count += write(1, format, 1);
+                    count += write_char('%');
+                    count += write_char(*format);
                     break;
             }
         }
         else
         {
-            count += write(1, format, 1);
+            count += write_char(*format);
         }
 
         format++;
