@@ -10,7 +10,7 @@
  */
 static int write_char(char c)
 {
-    return write(1, &c, 1);
+	return (write(1, &c, 1));
 }
 
 /**
@@ -20,13 +20,13 @@ static int write_char(char c)
  */
 static int write_str(char *str)
 {
-    int count = 0;
-    while (*str)
-    {
-        count += write_char(*str);
-        str++;
-    }
-    return count;
+	int count = 0;
+	while (*str)
+	{
+		count += write_char(*str);
+		str++;
+	}
+	return (count);
 }
 
 /**
@@ -36,57 +36,55 @@ static int write_str(char *str)
  */
 static int write_int(int n)
 {
-    char buffer[12]; /* Sufficient for 32-bit integers */
-    sprintf(buffer, "%d", n);
-    return write_str(buffer);
+	char buffer[12];
+	sprintf(buffer, "%d", n);
+	return write_str(buffer);
 }
 
 /**
  * _printf - Produces output according to a format.
  * @format: A character string containing directives.
  *
- * Return: The number of characters printed (excluding the null byte used to end output to strings).
+ * Return: The number of characters printed.
  */
 int _printf(const char *format, ...)
 {
-    va_list args;
-    int count = 0;
+	va_list args;
+	int count = 0;
 
-    va_start(args, format);
-
-    while (format && *format)
-    {
-        if (*format == '%' && *(format + 1) != '\0')
-        {
-            format++; /* Move past '%' */
-            switch (*format)
-            {
-            case 'c':
-                count += write_char(va_arg(args, int));
-                break;
-            case 's':
-                count += write_str(va_arg(args, char *));
-                break;
-            case '%':
-                count += write_char('%');
-                break;
-            case 'd':
-            case 'i':
-                count += write_int(va_arg(args, int));
-                break;
-            default:
-                count += write_char('%');
-                count += write_char(*format);
-                break;
-            }
-        }
-        else
-        {
-            count += write_char(*format);
-        }
-
-        format++;
-    }
-    va_end(args);
-    return (count);
+	va_start(args, format);
+	while (format && *format)
+	{
+		if (*format == '%' && *(format + 1) != '\0')
+		{
+			format++;
+			switch (*format)
+			{
+			case 'c':
+				count += write_char(va_arg(args, int));
+				break;
+			case 's':
+				count += write_str(va_arg(args, char *));
+				break;
+			case '%':
+				count += write_char('%');
+				break;
+			case 'd':
+			case 'i':
+				count += write_int(va_arg(args, int));
+				break;
+			default:
+				count += write_char('%');
+				count += write_char(*format);
+				break;
+			}
+		}
+		else
+		{
+			count += write_char(*format);
+		}
+		format++;
+	}
+	va_end(args);
+	return (count);
 }
