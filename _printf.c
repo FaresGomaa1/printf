@@ -10,7 +10,7 @@
  */
 static int write_char(char c)
 {
-    return write(1, &c, 1);
+    return (write(1, &c, 1));
 }
 
 /**
@@ -26,7 +26,7 @@ static int write_str(char *str)
         count += write_char(*str);
         str++;
     }
-    return count;
+    return (count);
 }
 
 /**
@@ -38,7 +38,7 @@ static int write_int(int n)
 {
     char buffer[12]; /* Sufficient for 32-bit integers */
     sprintf(buffer, "%d", n);
-    return write_str(buffer);
+    return (write_str(buffer));
 }
 
 /**
@@ -53,12 +53,11 @@ int _printf(const char *format, ...)
     int count = 0;
 
     va_start(args, format);
-
     while (format && *format)
     {
         if (*format == '%' && *(format + 1) != '\0')
         {
-            format++; /* Move past '%' */
+            format++; 
             switch (*format)
             {
                 case 'c':
@@ -80,14 +79,9 @@ int _printf(const char *format, ...)
                     break;
             }
         }
-        else
-        {
-            count += write_char(*format);
-        }
-
+        else {count += write_char(*format);}
         format++;
     }
-
     va_end(args);
     return (count);
 }
