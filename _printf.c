@@ -21,7 +21,7 @@ static int write_char(char c)
 static int write_str(char *str)
 {
 	int count = 0;
-	
+
 	while (*str)
 	{
 		count += write_char(*str);
@@ -38,7 +38,7 @@ static int write_str(char *str)
 static int write_int(int n)
 {
 	char buffer[12];
-	
+
 	sprintf(buffer, "%d", n);
 	return (write_str(buffer));
 }
